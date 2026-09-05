@@ -15,22 +15,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
-
       - name: Show build environment
         run: |
+          # Use the runner's DEFAULT Xcode (do NOT xcode-select a specific one):
+          # the default toolchain's SDK is guaranteed to match the simulator
+          # runtimes installed on the image, which actool needs when compiling
+          # the asset catalog. Forcing Xcode_16.2 caused
+          # "No simulator runtime version ... available" errors.
           xcodebuild -version
+          echo "--- installed simulator runtimes ---"
+          xcrun simctl list runtimes
+          echo "--- available Xcode apps ---"
+          ls -d /Applications/Xcode*.app 2>/dev/null || true
 
       - name: Build (no code signing)
         run: |
           set -o pipefail
-          # Build for a generic iOS *device* (not the simulator). The runner's
-          # simulator runtimes don't match the Xcode 16.2 SDK build version,
-          # which makes actool fail on the asset catalog with
-          # "No simulator runtime version ... available". A device build with
-          # signing disabled compiles + links all Swift and compiles the asset
-          # catalog without needing a simulator runtime.
           xcodebuild build \
             -project BoatController.xcodeproj \
             -scheme BoatController \
