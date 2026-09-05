@@ -46,22 +46,35 @@ final class BoatControlViewModel: ObservableObject {
 
     var isSteeringEnabled: Bool { bleManager.connectionState.isUsable }
 
-    /// `BLEManager` is `@MainActor`, so it can only be created on the main
-    /// actor. The default argument is an `@MainActor @autoclosure` so callers
-    /// (e.g. `ContentView`'s `@StateObject`) construct it in a main-actor
-    /// context instead of a nonisolated one, which Swift 6 requires.
-    init(bleManager: @MainActor @autoclosure () -> BLEManager = BLEManager()) {
-        self.bleManager = bleManager()
+    /// Creates the view model, constructing a `BLEManager` on the main actor.
+    /// `BLEManager` is `@MainActor`, so it must be created in a main-actor
+    /// context — which this initializer is.
+    init() {
+        self.bleManager = BLEManager()
+        subscribe()
+    }
 
+    /// Creates the view model with an injected `BLEManager` (used by previews
+    /// and tests). The caller is responsible for creating it on the main actor.
+    init(bleManager: BLEManager) {
+        self.bleManager = bleManager
+        subscribe()
+    }
+
+    private func subscribe() {
         // Animate the rudder smoothly towards the latest angle reported by the ESP32.
+        // The `.sink` closure is `@Sendable` and nonisolated, so hop to the main
+        // actor before mutating `@MainActor` state (Xcode 16 strict concurrency).
         bleManager.$rudderAngle
             .compactMap { $0 }
             .map { Double(min(180, max(0, $0))) }
             .removeDuplicates()
             .receive(on: RunLoop.main)
             .sink { [weak self] target in
-                withAnimation(.easeOut(duration: 0.15)) {
-                    self?.displayedRudderAngle = target
+                Task { @MainActor [weak self] in
+                    withAnimation(.easeOut(duration: 0.15)) {
+                        self?.displayedRudderAngle = target
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -70,8 +83,10 @@ final class BoatControlViewModel: ObservableObject {
         bleManager.$connectionState
             .receive(on: RunLoop.main)
             .sink { [weak self] state in
-                if !state.isUsable {
-                    self?.stopSteering(sendCenter: false)
+                Task { @MainActor [weak self] in
+                    if !state.isUsable {
+                        self?.stopSteering(sendCenter: false)
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -133,3 +148,8 @@ final class BoatControlViewModel: ObservableObject {
         bleManager.lastErrorMessage = nil
     }
 }
+
+// `BoatControlViewModel` is `@MainActor`, so all mutable state is already
+// main-actor confined. Declaring it `@unchecked Sendable` lets `@Sendable`
+// Combine/task closures capture it without strict-concurrency errors.
+extension BoatControlViewModel: @unchecked Sendable {}

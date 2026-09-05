@@ -6,9 +6,19 @@ struct ConnectionSheetView: View {
     @ObservedObject var viewModel: BoatControlViewModel
     @Environment(\.dismiss) private var dismiss
 
-    @State private var serviceUUID = BLEUUIDs.serviceUUID.uuidString
-    @State private var commandUUID = BLEUUIDs.commandCharacteristicUUID.uuidString
-    @State private var positionUUID = BLEUUIDs.positionCharacteristicUUID.uuidString
+    @State private var serviceUUID: String
+    @State private var commandUUID: String
+    @State private var positionUUID: String
+
+    /// `BLEUUIDs`' accessors read `UserDefaults`, which is main-actor isolated,
+    /// so the initial values are populated here (in a main-actor context)
+    /// rather than in the nonisolated stored-property default expressions.
+    init(viewModel: BoatControlViewModel) {
+        self.viewModel = viewModel
+        _serviceUUID = State(initialValue: BLEUUIDs.serviceUUID.uuidString)
+        _commandUUID = State(initialValue: BLEUUIDs.commandCharacteristicUUID.uuidString)
+        _positionUUID = State(initialValue: BLEUUIDs.positionCharacteristicUUID.uuidString)
+    }
 
     var body: some View {
         NavigationStack {

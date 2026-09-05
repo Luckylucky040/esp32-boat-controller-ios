@@ -374,3 +374,9 @@ extension BLEManager: CBPeripheralDelegate {
         }
     }
 }
+
+// `BLEManager` is `@MainActor`, so every mutable property is already
+// main-actor confined. Declaring it `@unchecked Sendable` lets it be captured
+// by CoreBluetooth (which invokes delegates off-main) and by `@Sendable` task
+// closures without strict-concurrency errors, while remaining data-race safe.
+extension BLEManager: @unchecked Sendable {}
