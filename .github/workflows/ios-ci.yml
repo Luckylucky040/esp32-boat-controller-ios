@@ -21,17 +21,6 @@ jobs:
       - name: Show build environment
         run: |
           xcodebuild -version
-          xcrun simctl list devices available | grep -i iphone | head -5
-
-      - name: Pick an iPhone simulator
-        id: dest
-        run: |
-          # Resolve the newest available iPhone simulator UDID so the build works
-          # regardless of which runtimes the runner image ships.
-          xcrun simctl list devices available -j > "$RUNNER_TEMP/devices.json"
-          UDID=$(python3 "$GITHUB_WORKSPACE/.github/workflows/pick_simulator.py" "$RUNNER_TEMP/devices.json")
-          echo "destination=platform=iOS Simulator,id=$UDID" >> "$GITHUB_OUTPUT"
-          echo "Using simulator UDID: $UDID"
 
       - name: Build (no code signing)
         run: |
@@ -39,7 +28,7 @@ jobs:
           xcodebuild build \
             -project BoatController.xcodeproj \
             -scheme BoatController \
-            -destination "${{ steps.dest.outputs.destination }}" \
+            -destination 'generic/platform=iOS Simulator' \
             -configuration Debug \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
