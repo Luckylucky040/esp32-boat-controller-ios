@@ -46,8 +46,11 @@ final class BoatControlViewModel: ObservableObject {
 
     var isSteeringEnabled: Bool { bleManager.connectionState.isUsable }
 
-    init(bleManager: BLEManager = BLEManager()) {
-        self.bleManager = bleManager
+    /// The default `BLEManager()` is wrapped in an `@autoclosure` so it is
+    /// created inside this `@MainActor` initializer rather than in the
+    /// nonisolated context where the default argument is evaluated.
+    init(bleManager: @autoclosure () -> BLEManager = BLEManager()) {
+        self.bleManager = bleManager()
 
         // Animate the rudder smoothly towards the latest angle reported by the ESP32.
         bleManager.$rudderAngle
