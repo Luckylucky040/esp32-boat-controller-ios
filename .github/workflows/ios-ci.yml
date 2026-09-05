@@ -25,10 +25,16 @@ jobs:
       - name: Build (no code signing)
         run: |
           set -o pipefail
+          # Build for a generic iOS *device* (not the simulator). The runner's
+          # simulator runtimes don't match the Xcode 16.2 SDK build version,
+          # which makes actool fail on the asset catalog with
+          # "No simulator runtime version ... available". A device build with
+          # signing disabled compiles + links all Swift and compiles the asset
+          # catalog without needing a simulator runtime.
           xcodebuild build \
             -project BoatController.xcodeproj \
             -scheme BoatController \
-            -destination 'generic/platform=iOS Simulator' \
+            -destination 'generic/platform=iOS' \
             -configuration Debug \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
