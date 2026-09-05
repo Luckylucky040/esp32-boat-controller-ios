@@ -46,10 +46,11 @@ final class BoatControlViewModel: ObservableObject {
 
     var isSteeringEnabled: Bool { bleManager.connectionState.isUsable }
 
-    /// The default `BLEManager()` is wrapped in an `@autoclosure` so it is
-    /// created inside this `@MainActor` initializer rather than in the
-    /// nonisolated context where the default argument is evaluated.
-    init(bleManager: @autoclosure () -> BLEManager = BLEManager()) {
+    /// `BLEManager` is `@MainActor`, so it can only be created on the main
+    /// actor. The default argument is an `@MainActor @autoclosure` so callers
+    /// (e.g. `ContentView`'s `@StateObject`) construct it in a main-actor
+    /// context instead of a nonisolated one, which Swift 6 requires.
+    init(bleManager: @MainActor @autoclosure () -> BLEManager = BLEManager()) {
         self.bleManager = bleManager()
 
         // Animate the rudder smoothly towards the latest angle reported by the ESP32.
