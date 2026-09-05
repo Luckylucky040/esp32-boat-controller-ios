@@ -1,0 +1,50 @@
+name: iOS Build
+
+"on":
+  push:
+    branches: [main, master, copilot/**]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build BoatController
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show build environment
+        run: |
+          # Use the runner's DEFAULT Xcode (do NOT xcode-select a specific one):
+          # the default toolchain's SDK is guaranteed to match the simulator
+          # runtimes installed on the image, which actool needs when compiling
+          # the asset catalog. Forcing Xcode_16.2 caused
+          # "No simulator runtime version ... available" errors.
+          xcodebuild -version
+          echo "--- installed simulator runtimes ---"
+          xcrun simctl list runtimes
+          echo "--- available Xcode apps ---"
+          ls -d /Applications/Xcode*.app 2>/dev/null || true
+
+      - name: Build (no code signing)
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project BoatController.xcodeproj \
+            -scheme BoatController \
+            -destination 'generic/platform=iOS' \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            | tee build.log
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcodebuild-log
+          path: build.log
+          retention-days: 14

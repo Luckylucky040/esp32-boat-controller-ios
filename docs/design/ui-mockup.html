@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boat Controller — UI Mockup</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,'SF Pro Text',Segoe UI,Roboto,sans-serif; }
+  body {
+    width:390px; height:844px; /* iPhone 14 logical size */
+    background:linear-gradient(180deg, rgb(13,20,33) 0%, rgb(20,36,56) 100%);
+    color:#fff; overflow:hidden; position:relative; margin:20px auto;
+    border-radius:40px; box-shadow:0 20px 60px rgba(0,0,0,.6);
+    display:flex; flex-direction:column;
+  }
+  .navbar { text-align:center; padding:18px 0 6px; position:relative; font-weight:600; font-size:17px; }
+  .navbar .antenna { position:absolute; right:18px; top:18px; color:#22d3ee; font-size:15px; }
+
+  /* Status bar */
+  .status {
+    display:flex; align-items:center; gap:0; margin:12px 16px 0;
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12);
+    border-radius:18px; padding:12px 8px;
+  }
+  .stat { flex:1; display:flex; gap:8px; align-items:center; padding:0 6px; }
+  .stat + .stat { border-left:1px solid rgba(255,255,255,.12); }
+  .dot { width:10px; height:10px; border-radius:50%; background:#22c55e; box-shadow:0 0 6px #22c55e; }
+  .stat .label { font-size:9px; font-weight:600; color:#9aa7b8; letter-spacing:.5px; }
+  .stat .value { font-size:13px; font-weight:600; color:#fff; }
+  .icon { font-size:14px; }
+
+  /* Boat area */
+  .boat-wrap { flex:0 0 auto; display:flex; justify-content:center; padding:18px 40px 0; }
+  .water {
+    width:250px; height:320px; border-radius:24px; position:relative;
+    background:linear-gradient(180deg, rgb(13,82,117) 0%, rgb(20,122,158) 100%);
+    overflow:hidden;
+  }
+  .water::before { content:''; position:absolute; width:225px; height:225px; border-radius:50%;
+    background:rgba(255,255,255,.06); top:-90px; left:-75px; }
+  .water::after { content:''; position:absolute; width:175px; height:175px; border-radius:50%;
+    background:rgba(255,255,255,.05); bottom:-70px; right:-80px; }
+
+  /* Hull (top-down) */
+  .hull {
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:150px; height:280px;
+    background:linear-gradient(90deg, rgb(235,240,245) 0%, rgb(199,209,222) 100%);
+    border:2px solid rgba(255,255,255,.85);
+    border-radius:75px 75px 18px 18px / 130px 130px 18px 18px;
+    clip-path:polygon(50% 0, 98% 8%, 100% 22%, 100% 90%, 78% 100%, 22% 100%, 0 90%, 0 22%, 2% 8%);
+  }
+  .deck {
+    position:absolute; left:50%; top:40%; transform:translate(-50%,-50%);
+    width:75px; height:150px; border-radius:40px;
+    background:rgb(56,69,84); border:1.5px solid rgba(255,255,255,.25);
+  }
+  /* Rudder at stern, rotated (example: 45° left) */
+  .rudder-pivot { position:absolute; left:50%; top:86%; transform:translateX(-50%); }
+  .rudder-pivot .pin { width:12px; height:12px; border-radius:50%; background:#fff; position:relative; z-index:2; }
+  .rudder {
+    position:absolute; left:50%; top:6px; transform-origin:top center;
+    transform:translateX(-50%) rotate(-45deg);
+    width:17px; height:51px; border-radius:6px;
+    background:rgb(64,140,217); border:1px solid rgba(255,255,255,.6);
+    box-shadow:0 2px 4px rgba(0,0,0,.35);
+  }
+
+  /* Rudder readout */
+  .readout { text-align:center; margin-top:16px; }
+  .readout .angle { font-size:34px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .readout .sub { font-size:11px; font-weight:600; letter-spacing:2px; color:#9aa7b8; margin-top:2px; }
+
+  /* Steering buttons */
+  .controls { display:flex; gap:16px; padding:0 16px 24px; margin-top:auto; }
+  .btn {
+    flex:1; height:150px; border-radius:24px; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:8px; color:#fff;
+    border:1px solid rgba(255,255,255,.3);
+  }
+  .btn .arrow { font-size:40px; font-weight:700; }
+  .btn .title { font-size:15px; font-weight:700; letter-spacing:2px; }
+  .btn .hint { font-size:11px; opacity:.85; }
+  .btn.left  { background:linear-gradient(180deg, rgb(245,115,82), rgb(224,93,62)); opacity:.75; }
+  .btn.right { background:linear-gradient(180deg, rgb(89,199,117), rgb(64,178,96)); opacity:.75; }
+
+  .caption { text-align:center; color:#5b6b80; font-size:11px; padding:8px 0 14px; }
+</style>
+</head>
+<body>
+  <div class="navbar">
+    Boat Controller
+    <span class="antenna">📶</span>
+  </div>
+
+  <div class="status">
+    <div class="stat"><span class="dot"></span>
+      <span><span class="label">CONNECTION</span><br><span class="value">Ready</span></span></div>
+    <div class="stat"><span class="icon">📡</span>
+      <span><span class="label">SIGNAL</span><br><span class="value">-58 dBm</span></span></div>
+    <div class="stat"><span class="icon">⛵</span>
+      <span><span class="label">RUDDER</span><br><span class="value">45° left</span></span></div>
+  </div>
+
+  <div class="boat-wrap">
+    <div class="water">
+      <div class="hull"></div>
+      <div class="deck"></div>
+      <div class="rudder-pivot">
+        <div class="pin"></div>
+        <div class="rudder"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="readout">
+    <div class="angle">45° left</div>
+    <div class="sub">RUDDER POSITION</div>
+  </div>
+
+  <div class="controls">
+    <div class="btn left">
+      <span class="arrow">◀</span>
+      <span class="title">LEFT</span>
+      <span class="hint">Hold to steer</span>
+    </div>
+    <div class="btn right">
+      <span class="arrow">▶</span>
+      <span class="title">RIGHT</span>
+      <span class="hint">Hold to steer</span>
+    </div>
+  </div>
+
+  <div class="caption">ESP32 Boat Controller — main screen mockup (iPhone 14, 390×844)</div>
+</body>
+</html>
