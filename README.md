@@ -7,6 +7,7 @@ ESP32 in real time.
 
 ![Platform](https://img.shields.io/badge/platform-iOS%2016%2B-blue)
 ![Swift](https://img.shields.io/badge/Swift-5.9-orange)
+![iOS Build](https://github.com/Luckylucky040/esp32-boat-controller-ios/actions/workflows/ios-ci.yml/badge.svg)
 
 ## Features
 
@@ -30,6 +31,8 @@ ESP32 in real time.
   (BLE does **not** work in the iOS Simulator — use a real device)
 - An ESP32 flashed with the boat base-unit firmware (see below)
 
+> **No Mac?** See [Building without a Mac](#building-without-a-mac) below.
+
 ## Getting Started
 
 1. Clone this repository.
@@ -41,6 +44,31 @@ ESP32 in real time.
 Tap the **antenna icon** (top right) to open the connection sheet, press
 **Scan**, and select your boat. Once the state shows **Ready**, hold the
 LEFT/RIGHT buttons to steer.
+
+## Building without a Mac
+
+You don't need to own a Mac to build this app. This repository includes a
+GitHub Actions workflow ([`.github/workflows/ios-ci.yml`](.github/workflows/ios-ci.yml))
+that compiles the app on GitHub's hosted **macOS runner** every time you push.
+
+- The badge at the top of this README shows the latest build result.
+- Open the **Actions** tab to see build logs for each commit — a green check
+  means the code compiles cleanly on real Xcode.
+
+To get the app **onto your iPhone** you need an Apple ID for code signing:
+
+| Approach | Cost | Notes |
+| --- | --- | --- |
+| Free Apple ID + [Sideloadly](https://sideloadly.io/) / AltStore (Windows) | $0 | App expires every 7 days — fine for personal tinkering; just re-install. |
+| Apple Developer Program + TestFlight | $99/year | Proper signing, no weekly expiry, easy OTA installs. |
+
+Typical no-Mac flow:
+
+1. Push your changes — GitHub Actions builds the unsigned app automatically.
+2. Add a signing step (or use Sideloadly on Windows) with your Apple ID to
+   produce a signed `.ipa`.
+3. Install the `.ipa` on your iPhone over USB with Sideloadly, or upload to
+   TestFlight if you have a paid developer account.
 
 ## BLE Protocol
 

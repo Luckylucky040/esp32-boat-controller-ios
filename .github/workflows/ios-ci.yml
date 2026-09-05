@@ -1,0 +1,55 @@
+name: iOS Build
+
+"on":
+  push:
+    branches: [main, master, copilot/**]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build BoatController
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+
+      - name: Show build environment
+        run: |
+          xcodebuild -version
+          xcrun simctl list devices available | grep -i iphone | head -5
+
+      - name: Pick an iPhone simulator
+        id: dest
+        run: |
+          # Resolve the newest available iPhone simulator UDID so the build works
+          # regardless of which runtimes the runner image ships.
+          xcrun simctl list devices available -j > "$RUNNER_TEMP/devices.json"
+          UDID=$(python3 "$GITHUB_WORKSPACE/.github/workflows/pick_simulator.py" "$RUNNER_TEMP/devices.json")
+          echo "destination=platform=iOS Simulator,id=$UDID" >> "$GITHUB_OUTPUT"
+          echo "Using simulator UDID: $UDID"
+
+      - name: Build (no code signing)
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project BoatController.xcodeproj \
+            -scheme BoatController \
+            -destination "${{ steps.dest.outputs.destination }}" \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            | tee build.log
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcodebuild-log
+          path: build.log
+          retention-days: 14
