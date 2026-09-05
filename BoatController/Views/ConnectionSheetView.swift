@@ -158,7 +158,7 @@ struct ConnectionSheetView: View {
                 .autocorrectionDisabled()
                 .onSubmit(onCommit)
                 .onChange(of: text.wrappedValue) { _ in onCommit() }
-                .foregroundStyle(BLEUUIDs.isValid(text.wrappedValue) ? .primary : .red)
+                .foregroundStyle(BLEUUIDs.isValid(text.wrappedValue) ? Color.primary : Color.red)
         }
     }
 }
