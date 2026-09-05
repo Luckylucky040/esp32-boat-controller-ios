@@ -147,7 +147,7 @@ struct ConnectionSheetView: View {
                 .textInputAutocapitalization(.characters)
                 .autocorrectionDisabled()
                 .onSubmit(onCommit)
-                .onChange(of: text.wrappedValue) { _, _ in onCommit() }
+                .onChange(of: text.wrappedValue) { _ in onCommit() }
                 .foregroundStyle(BLEUUIDs.isValid(text.wrappedValue) ? .primary : .red)
         }
     }
