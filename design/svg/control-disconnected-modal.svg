@@ -10,13 +10,16 @@
   <rect width="390" height="844" fill="#0B1220" opacity="0.7"/>
 
   <!-- modal card -->
-  <rect x="35" y="322" width="320" height="200" rx="20" fill="#16223A"/>
-  <circle cx="195" cy="372" r="22" fill="#FF5C5C" opacity="0.15"/>
-  <text x="195" y="380" fill="#FF5C5C" font-size="20" text-anchor="middle">⛔</text>
-  <text x="195" y="422" fill="#F5F7FA" font-size="20" font-weight="700" text-anchor="middle">Connection Lost</text>
-  <text x="195" y="446" fill="#A6B0C3" font-size="14" text-anchor="middle">The boat disconnected</text>
-  <text x="195" y="462" fill="#A6B0C3" font-size="14" text-anchor="middle">unexpectedly.</text>
+  <rect x="35" y="300" width="320" height="260" rx="20" fill="#16223A"/>
+  <circle cx="195" cy="350" r="22" fill="#FF5C5C" opacity="0.15"/>
+  <text x="195" y="358" fill="#FF5C5C" font-size="20" text-anchor="middle">⛔</text>
+  <text x="195" y="400" fill="#F5F7FA" font-size="20" font-weight="700" text-anchor="middle">Connection Lost</text>
+  <text x="195" y="424" fill="#A6B0C3" font-size="14" text-anchor="middle">The boat disconnected</text>
+  <text x="195" y="440" fill="#A6B0C3" font-size="14" text-anchor="middle">unexpectedly.</text>
 
-  <rect x="59" y="478" width="272" height="44" rx="14" fill="#2E8BFF"/>
-  <text x="195" y="505" fill="#FFFFFF" font-size="15" font-weight="600" text-anchor="middle">Reconnect</text>
+  <rect x="59" y="456" width="272" height="44" rx="14" fill="#2E8BFF"/>
+  <text x="195" y="483" fill="#FFFFFF" font-size="15" font-weight="600" text-anchor="middle">Reconnect</text>
+
+  <rect x="59" y="508" width="272" height="44" rx="14" fill="none" stroke="#33456B" stroke-width="1"/>
+  <text x="195" y="535" fill="#F5F7FA" font-size="15" font-weight="600" text-anchor="middle">Back to Scanner</text>
 </svg>

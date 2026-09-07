@@ -81,7 +81,7 @@
     "boatViewSize": { "value": 260, "description": "Square top-down boat canvas" }
   },
   "motion": {
-    "steeringCommandInterval": { "value": "40ms", "description": "25Hz hold-to-steer repeat, matches BoatControlViewModel" },
+    "steeringCommandInterval": { "value": "40ms", "description": "25Hz hold-to-steer repeat, matches the planned BoatControlViewModel steering loop (see PR #1)" },
     "rudderSmoothing": { "value": "spring(response: 0.25, dampingFraction: 0.8)", "description": "Animated rudder angle easing" },
     "rssiPoll": { "value": "2s" }
   }
