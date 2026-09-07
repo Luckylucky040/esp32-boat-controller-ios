@@ -1,0 +1,22 @@
+<svg width="390" height="844" viewBox="0 0 390 844" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect width="390" height="844" fill="#0B1220"/>
+  <!-- dimmed background control screen -->
+  <text x="16" y="80" fill="#F5F7FA" font-size="22" font-weight="700" opacity="0.3">Boat Control</text>
+  <g transform="translate(195,280)" opacity="0.2">
+    <circle r="130" fill="#111A2E"/>
+    <polygon points="0,-90 34,20 22,70 -22,70 -34,20" fill="#A6B0C3"/>
+  </g>
+  <rect x="0" y="624" width="390" height="220" fill="#16223A" opacity="0.2"/>
+  <rect width="390" height="844" fill="#0B1220" opacity="0.7"/>
+
+  <!-- modal card -->
+  <rect x="35" y="322" width="320" height="200" rx="20" fill="#16223A"/>
+  <circle cx="195" cy="372" r="22" fill="#FF5C5C" opacity="0.15"/>
+  <text x="195" y="380" fill="#FF5C5C" font-size="20" text-anchor="middle">⛔</text>
+  <text x="195" y="422" fill="#F5F7FA" font-size="20" font-weight="700" text-anchor="middle">Connection Lost</text>
+  <text x="195" y="446" fill="#A6B0C3" font-size="14" text-anchor="middle">The boat disconnected</text>
+  <text x="195" y="462" fill="#A6B0C3" font-size="14" text-anchor="middle">unexpectedly.</text>
+
+  <rect x="59" y="478" width="272" height="44" rx="14" fill="#2E8BFF"/>
+  <text x="195" y="505" fill="#FFFFFF" font-size="15" font-weight="600" text-anchor="middle">Reconnect</text>
+</svg>

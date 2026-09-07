@@ -1,0 +1,88 @@
+{
+  "$schema": "https://schemas.figma.com/design-tokens/draft",
+  "meta": {
+    "name": "ESP32 Boat Controller - Design Tokens",
+    "version": "1.0.0",
+    "platform": "iOS 16+ / SwiftUI",
+    "usage": "Import via a Figma Tokens/Variables plugin (e.g. 'Tokens Studio for Figma') to generate Figma Variables, or recreate manually as Figma color/typography/effect styles."
+  },
+  "color": {
+    "background": {
+      "primary": { "value": "#0B1220", "type": "color", "description": "App background, near-black navy (dark mode first)" },
+      "secondary": { "value": "#111A2E", "type": "color", "description": "Sheet / modal background" },
+      "elevated": { "value": "#16223A", "type": "color", "description": "Cards, grouped list rows" }
+    },
+    "brand": {
+      "primary": { "value": "#2E8BFF", "type": "color", "description": "Primary accent — buttons, links, active states" },
+      "primaryPressed": { "value": "#1E6FDB", "type": "color" },
+      "secondary": { "value": "#00D1B2", "type": "color", "description": "Secondary accent — RSSI / positive telemetry" }
+    },
+    "status": {
+      "connected": { "value": "#2ED573", "type": "color" },
+      "connecting": { "value": "#FFC94D", "type": "color" },
+      "reconnecting": { "value": "#FFA640", "type": "color" },
+      "disconnected": { "value": "#FF5C5C", "type": "color" },
+      "neutral": { "value": "#7C8AA5", "type": "color" }
+    },
+    "steering": {
+      "left": { "value": "#2E8BFF", "type": "color" },
+      "leftActive": { "value": "#1E6FDB", "type": "color" },
+      "right": { "value": "#00D1B2", "type": "color" },
+      "rightActive": { "value": "#00A88E", "type": "color" },
+      "center": { "value": "#7C8AA5", "type": "color" }
+    },
+    "text": {
+      "primary": { "value": "#F5F7FA", "type": "color" },
+      "secondary": { "value": "#A6B0C3", "type": "color" },
+      "tertiary": { "value": "#6E7A94", "type": "color" },
+      "inverse": { "value": "#0B1220", "type": "color" },
+      "onAccent": { "value": "#FFFFFF", "type": "color" }
+    },
+    "border": {
+      "subtle": { "value": "#22304D", "type": "color" },
+      "strong": { "value": "#33456B", "type": "color" }
+    }
+  },
+  "typography": {
+    "largeTitle": { "fontFamily": "SF Pro Display", "fontWeight": "700", "fontSize": 34, "lineHeight": 41, "value": "iOS .largeTitle" },
+    "title1": { "fontFamily": "SF Pro Display", "fontWeight": "700", "fontSize": 28, "lineHeight": 34, "value": "iOS .title" },
+    "title2": { "fontFamily": "SF Pro Display", "fontWeight": "600", "fontSize": 22, "lineHeight": 28, "value": "iOS .title2" },
+    "headline": { "fontFamily": "SF Pro Text", "fontWeight": "600", "fontSize": 17, "lineHeight": 22, "value": "iOS .headline" },
+    "body": { "fontFamily": "SF Pro Text", "fontWeight": "400", "fontSize": 17, "lineHeight": 22, "value": "iOS .body" },
+    "callout": { "fontFamily": "SF Pro Text", "fontWeight": "400", "fontSize": 16, "lineHeight": 21, "value": "iOS .callout" },
+    "subheadline": { "fontFamily": "SF Pro Text", "fontWeight": "400", "fontSize": 15, "lineHeight": 20, "value": "iOS .subheadline" },
+    "footnote": { "fontFamily": "SF Pro Text", "fontWeight": "400", "fontSize": 13, "lineHeight": 18, "value": "iOS .footnote" },
+    "caption1": { "fontFamily": "SF Pro Text", "fontWeight": "400", "fontSize": 12, "lineHeight": 16, "value": "iOS .caption" },
+    "monoTelemetry": { "fontFamily": "SF Mono", "fontWeight": "500", "fontSize": 20, "lineHeight": 24, "description": "Rudder angle / RSSI numeric readouts" }
+  },
+  "spacing": {
+    "xxs": { "value": 4, "type": "spacing" },
+    "xs": { "value": 8, "type": "spacing" },
+    "sm": { "value": 12, "type": "spacing" },
+    "md": { "value": 16, "type": "spacing" },
+    "lg": { "value": 24, "type": "spacing" },
+    "xl": { "value": 32, "type": "spacing" },
+    "xxl": { "value": 48, "type": "spacing" }
+  },
+  "radius": {
+    "sm": { "value": 8, "type": "borderRadius" },
+    "md": { "value": 14, "type": "borderRadius" },
+    "lg": { "value": 20, "type": "borderRadius" },
+    "pill": { "value": 999, "type": "borderRadius" }
+  },
+  "elevation": {
+    "card": { "x": 0, "y": 4, "blur": 16, "spread": 0, "color": "#00000066" },
+    "sheet": { "x": 0, "y": -2, "blur": 24, "spread": 0, "color": "#00000080" }
+  },
+  "sizing": {
+    "steeringHoldArea": { "width": "50%", "height": 220, "description": "Each of the left/right hold zones on the main control screen" },
+    "primaryButtonHeight": { "value": 50 },
+    "statusDotDiameter": { "value": 10 },
+    "boatViewSize": { "value": 260, "description": "Square top-down boat canvas" }
+  },
+  "motion": {
+    "steeringCommandInterval": { "value": "40ms", "description": "25Hz hold-to-steer repeat, matches BoatControlViewModel" },
+    "rudderSmoothing": { "value": "spring(response: 0.25, dampingFraction: 0.8)", "description": "Animated rudder angle easing" },
+    "rssiPoll": { "value": "2s" }
+  }
+}
